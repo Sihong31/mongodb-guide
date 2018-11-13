@@ -10,7 +10,7 @@
 
 (33, "address in memory/ collection a3")
 
-// Do not use too many indexes. Indexes do not come for free, pay performance cost on inserts. Costs performance when inserting documents because each index would have to be updated.
+// Do not use too many indexes. Indexes do not come for free, pay performance cost on writes. Costs performance when inserting documents because each index would have to be updated.
 
 // .explain() helps us analyze our query, explain works for find, update, delete
 db.contacts.explain().find({"dob.age": {$gt: 60}})
