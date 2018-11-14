@@ -1,0 +1,80 @@
+Security Checklist
+
+-Authentication & Authorization
+-Transport Encryption:
+    Data in transit should be encrypted
+-Encryption at Rest:
+    Data in the database should be encrypted
+-Auditing:
+    Pure server admin task
+    Who did what? What actions occured
+-Server & Network config and setup
+-Backups & Software Updates
+
+
+Authentication:
+    -Identifies valid users of the database
+    -Analogy: You are employed and therefore may access the office
+Authorization:
+    -Identifies what these users may actually do in the database
+    -Analogy: You are employed as an account and therefore may access the office and process orders
+
+Users are assigned Roles
+Roles contains Privileges
+Privileges are made up of Resources and Actions
+Resource, for example, Shop Database => Products Collection
+Action, for example, insert()
+
+Why Roles?
+    Different types of Database Users
+    Administrator, Developer, Data Scientist
+    Administrator => Manages database configs, create users, does not need to fetch or insert data
+    Developer => Needs to be able to perform CRUD operations, does not manage database configs or create users
+    Data Scientist => Needs to be able to fetch data, does not manage database configs or create users
+
+
+Two ways to authenticate in mongo shell
+db.auth("user", "password")
+mongo -u <user> -p <password>
+mongo -u <user> -p <password> --authenticationDatabase admin
+
+use admin
+// can createUser() on specific databases, this offers a lot of flexibility
+db.createUser({user: "test", pwd: "test", roles: ["userAdminAnyDatabase"]})
+// updateUser will replace old roles, can also set which database the user should have roles in
+db.updateUser("test", {roles: ["readWrite", {role: "readWrite", db: "blog"}]})
+db.auth("test", "test")
+// result success => 1
+
+Built-in Roles
+Database User
+    read
+    readWrite
+
+Databae Admin
+    dbAdmin
+    userAdmin
+    dbOwner
+
+All Database Roles
+    readAnyDatabase
+    readWriteAnyDatabase
+    userAdminAnyDatabase
+    dbAdminAnyDatabase
+
+Cluster Admin
+    clusterManager
+    clusterMonitor
+    hostManager
+    clusterAdmin
+
+Backup/Restore
+    backup
+    restore
+
+Superuser
+    dbOwner
+    userAdmin
+    userAdminAnyDatabase
+    root
+
