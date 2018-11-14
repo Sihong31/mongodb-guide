@@ -1,0 +1,67 @@
+Performance, Fault Tolerance, Deployment
+
+What influences Performance?
+
+    Efficient Queries / Operations
+    Indexes
+    Fitting Data Schema
+
+    Hardware & Network
+    Sharding
+    Replica Sets
+
+-------------------------
+Capped Collections limit the amount of documents that can be stored. The oldest documents are deleted when new documents are inserted. Default size limit is 4 bytes. Max # of documents can be set.
+db.createCollection("cappedCollection", {capped: true, size: 10000, max: 3})
+
+For a capped collection, the order in which we insert documents is always the order we retrieve them.
+To change order of a capped collection we can use:
+db.cappedCollection.find().sort({$natural: -1}).pretty()
+-------------------------
+
+-------------------------
+Replica Set:
+Primary Node and 2 Secondary Nodes
+If the Primary Node goes down, election is held and a Secondary node becomes the Primary node. This way data is backed up.
+Read operations can be distributed across Primary node and secondary nodes to speed up operations.
+Write operations always go to the Primary node
+-------------------------
+
+-------------------------
+Sharding (Horizontal Scaling):
+Sharding is all about distributing data across servers and then querying and using efficiently
+
+|                          |                          |                          |        
+Server/Shard               Server/Shard               Server/Shard               Server/Shard
+Shard key                  Shard key                  Shard key                  Shard key
+
+mongos (Router) will go through shard keys to obtain appropriate data
+
+find() => mongos => shards
+(Option 1: Operation does not contain shard key, broadcast to shards and collect data)
+(Option 2: Operation does contain shard key, directly send to correct Shard)
+ 
+Data is distributed (not replicated) across Shards
+Queries can run across all Shards
+-------------------------
+
+Deploying a MongoDB Server
+    Manage Shards
+    Manage Replica Shards
+    Secure User / Auth Steup
+    Protect Web Server / Network
+    Update Software
+    Regular Backups
+    Encryption (Transportation and at Rest)
+
+-------------------------
+Transactions:
+Operations either succeed together or fail together, and rollback to previous state otherwise
+const session = db.getMongo().startSession()
+session.startTransaction()
+const usersCollection = session.getDatabase("blog").users
+const postsCollection = session.getDatabase("blog").posts
+usersCollection.deleteOne({_id: ObjectId("5bec9e52cac8269778a41cb7")})
+postsCollection.deleteMany({userId: ObjectId("5bec9e52cac8269778a41cb7")})
+session.commitTransaction()
+-------------------------
