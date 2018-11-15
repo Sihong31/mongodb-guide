@@ -1,6 +1,7 @@
 const mongodb = require('mongodb');
 
 const MongoClient = mongodb.MongoClient;
+// MongoDB Atlas credentials have been changed since the commit.
 const mongodbUrl = 'mongodb+srv://sihong:admin@cluster0-4uoj9.mongodb.net/shop';
 
 let _db;
