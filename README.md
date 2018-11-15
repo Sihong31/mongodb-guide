@@ -1,4 +1,5 @@
 # mongodb-guide
+<pre>
 Notes on working with MongoDB
   -Aggregation Framework
   -CRUD Operations
@@ -10,3 +11,4 @@ Notes on working with MongoDB
 
 Branch: shell-to-driver
 Setting up simple front end and back end app with MongoDB
+</pre>
